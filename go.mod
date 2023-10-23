@@ -3,8 +3,8 @@ module github.com/kontena/kubelet-rubber-stamp
 go 1.21
 
 require (
-	k8s.io/api v0.28.2
-	k8s.io/apimachinery v0.28.2
+	k8s.io/api v0.28.3
+	k8s.io/apimachinery v0.28.3
 	k8s.io/client-go v0.28.2
 	k8s.io/klog v1.0.0
 	sigs.k8s.io/controller-runtime v0.15.0
