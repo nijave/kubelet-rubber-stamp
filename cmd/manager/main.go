@@ -4,6 +4,7 @@ import (
 	"flag"
 	"os"
 	"runtime"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 
 	"github.com/kontena/kubelet-rubber-stamp/pkg/apis"
 	"github.com/kontena/kubelet-rubber-stamp/pkg/controller"
@@ -41,7 +42,13 @@ func main() {
 	}
 
 	// Create a new Cmd to provide shared dependencies and start components
-	mgr, err := manager.New(cfg, manager.Options{Namespace: namespace})
+	mgr, err := manager.New(cfg, manager.Options{
+		Cache: cache.Options{
+			DefaultNamespaces: map[string]cache.Config{
+				namespace: {},
+			},
+		},
+	})
 	if err != nil {
 		klog.Fatal(err)
 	}
