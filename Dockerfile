@@ -1,18 +1,15 @@
-FROM docker.io/library/golang:1.19 as builder
+FROM docker.io/library/golang:1.26 AS builder
 
-WORKDIR  /src
+WORKDIR /src
 
-# Add dependency and download it
-ADD go.mod .
-ADD go.sum .
+COPY go.mod go.sum ./
 RUN go mod download
 
-# Add source and compile
-ADD . /src/
+COPY . .
 
-ARG ARCH=amd64
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=${ARCH} go build -a -installsuffix cgo -o kubelet-rubber-stamp cmd/manager/main.go
-
+ARG TARGETOS=linux
+ARG TARGETARCH=amd64
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o kubelet-rubber-stamp cmd/manager/main.go
 
 FROM scratch
 
